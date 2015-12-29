@@ -38,9 +38,9 @@ class ChooseDateViewController: UIViewController {
         if segue.identifier == "ThatsIt" {
             let destinationController = segue.destinationViewController as! AddToDoViewController
             destinationController.chosenDateAsString = dateAsString
-            destinationController.toDoName = toDoName
-            destinationController.toDoDescription = toDoDescription
-            destinationController.toDoEstimatedTime = toDoEstimatedTime
+            destinationController.toDoNameAsString = toDoName
+            destinationController.toDoDescriptionAsString = toDoDescription
+            destinationController.toDoEstimatedTimeAsString = toDoEstimatedTime
         }
     }
 }

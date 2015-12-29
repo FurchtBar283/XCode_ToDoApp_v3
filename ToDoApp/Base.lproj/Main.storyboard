@@ -123,6 +123,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dJg-hK-loM">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="saveButtonClicked:" destination="3yh-38-p8C" eventType="touchUpInside" id="YUh-HC-qTM"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eWC-fF-HwA">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>

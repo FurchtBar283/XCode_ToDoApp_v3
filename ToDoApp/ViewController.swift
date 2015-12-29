@@ -23,10 +23,12 @@ class ViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // Diese Funktion setzt die Anzahl an Sections innerhalb der TableView
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
+    // Diese Funktion legt die Anzahl an Reihen/Cells pro Section fest
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return toDoArray.count
     }
