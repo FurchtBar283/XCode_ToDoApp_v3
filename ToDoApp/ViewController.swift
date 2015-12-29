@@ -20,26 +20,6 @@ class ViewController: UITableViewController {
         // Do any additional setup after loading the view, typically from a nib.
         fetchDatabase()
         /*
-        print("--------")
-        print("--------")
-        print("Jetzt kommts")
-        print(self.dataFromCoreData["Optional(Zimmer saugen )"])
-        print(self.dataFromCoreData["Optional(Bierhoff )"])
-        print("--------")
-        print("--------")
-        print(dataFromCoreData.values)
-        
-        let person = dataFromCoreData["Optional(Bierhoff )"]!
-        
-        let text = person["toDoName"]
-        let text2 = person["toDoDate"]
-        print("--------")
-        print("--------")
-        print(text)
-        print(text2)
-        */
-        /*
-        print("hihi")
         print(self.dataFromCoreData["Optional(Bierhoff )"])
         print("blabla")
         let person = dataFromCoreData["Optional(Bierhoff )"]!
@@ -72,10 +52,11 @@ class ViewController: UITableViewController {
             
             if results.count > 0 {
                 for item in results as! [NSManagedObject] {
-                    let name = item.valueForKey("toDoName")
-                    let descr = item.valueForKey("toDoDesc")
-                    let estim = item.valueForKey("toDoEstim")
-                    let doDate = item.valueForKey("toDoDate")
+                    // ! behebt den Optional("...") Anzeigefehler
+                    let name = item.valueForKey("toDoName")!
+                    let descr = item.valueForKey("toDoDesc")!
+                    let estim = item.valueForKey("toDoEstim")!
+                    let doDate = item.valueForKey("toDoDate")!
                     
                     /*
                     print(name)
@@ -105,13 +86,13 @@ class ViewController: UITableViewController {
                         "toDoEstim": "\(estim)",
                         "toDoDate": "\(doDate)"]
                     
-                    print(dataFromCoreData["\(name)"])
+                    //print(dataFromCoreData["\(name)"])
                 }
             }
             
             
         } catch {
-            print("Error while trying to fetch data from CoreData in function saveButtonClicked")
+            print("Error while trying to fetch data from CoreData in function fetchDatabase")
         }
     }
     
@@ -145,12 +126,12 @@ class ViewController: UITableViewController {
     */
     
     
-    // Diese Funktion setzt die Anzahl an Sections innerhalb der TableView
+    // Diese Funktion setzt die Anzahl der Sections innerhalb der TableView
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    // Diese Funktion legt die Anzahl an Reihen/Cells pro Section fest
+    // Diese Funktion legt die Anzahl der Reihen/Cells pro Section fest
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Skript-Version
         /*
@@ -164,8 +145,16 @@ class ViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("ToDoCell") as UITableViewCell!
         //cell.textLabel?.text = toDoArray[indexPath.row]
         let key   = Array(self.dataFromCoreData.keys)[indexPath.row]
-        //var value = Array(self.dataFromCoreData.values)[indexPath.row]
+        // Aktueller Test um Daten mit Cell-Eintrag verbinden zu können
+        // Anfang
+        let value = Array(self.dataFromCoreData.values)[indexPath.row]
+        print("VALUEVALUE")
+        print(value)
+        let indexPathAsString = String(indexPath.row)
+        let testDict: [String:[String:String]] = [indexPathAsString: value]
+        print(testDict)
         cell.textLabel?.text = key
+        // Ende
         
         return cell
     }
@@ -173,8 +162,6 @@ class ViewController: UITableViewController {
     // Reagiert wenn eine Zelle angewählt wurde
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("Selected cell: \(indexPath.row)")
-        let thisCell = tableView.dequeueReusableCellWithIdentifier("ToDoCell") as UITableViewCell!
-        print(thisCell.textLabel?.text)
     }
     
     // Diese Funktion setzt die entsprechende Zelle/Reihe auf editierbar
