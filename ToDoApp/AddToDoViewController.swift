@@ -113,12 +113,10 @@ class AddToDoViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        toDoNameTextfieldOutlet.text = toDoNameAsString
+        toDoDescriptionTextfieldOutlet.text = toDoDescriptionAsString
+        toDoEstimatedTimeTextfieldOutlet.text = toDoEstimatedTimeAsString
         chosenDateOutlet.text = chosenDateAsString
-        /*
-        print(toDoName)
-        print(toDoDescription)
-        print(toDoEstimatedTime)
-        */
     }
     
     override func didReceiveMemoryWarning() {
