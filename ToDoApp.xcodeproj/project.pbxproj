@@ -15,6 +15,8 @@
 		16C13F711C32EE5D00E51D4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16C13F6F1C32EE5D00E51D4E /* LaunchScreen.storyboard */; };
 		16C13F7C1C32EE5D00E51D4E /* ToDoAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C13F7B1C32EE5D00E51D4E /* ToDoAppTests.swift */; };
 		16C13F871C32EE5D00E51D4E /* ToDoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C13F861C32EE5D00E51D4E /* ToDoAppUITests.swift */; };
+		16C13F951C32FBE000E51D4E /* AddToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C13F941C32FBE000E51D4E /* AddToDoViewController.swift */; };
+		16C13F971C32FC2F00E51D4E /* ChooseDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C13F961C32FC2F00E51D4E /* ChooseDateViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		16C13F821C32EE5D00E51D4E /* ToDoAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ToDoAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		16C13F861C32EE5D00E51D4E /* ToDoAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoAppUITests.swift; sourceTree = "<group>"; };
 		16C13F881C32EE5D00E51D4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		16C13F941C32FBE000E51D4E /* AddToDoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToDoViewController.swift; sourceTree = "<group>"; };
+		16C13F961C32FC2F00E51D4E /* ChooseDateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseDateViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,8 @@
 				16C13F6F1C32EE5D00E51D4E /* LaunchScreen.storyboard */,
 				16C13F721C32EE5D00E51D4E /* Info.plist */,
 				16C13F6A1C32EE5D00E51D4E /* ToDoApp.xcdatamodeld */,
+				16C13F941C32FBE000E51D4E /* AddToDoViewController.swift */,
+				16C13F961C32FC2F00E51D4E /* ChooseDateViewController.swift */,
 			);
 			path = ToDoApp;
 			sourceTree = "<group>";
@@ -259,6 +265,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16C13F971C32FC2F00E51D4E /* ChooseDateViewController.swift in Sources */,
+				16C13F951C32FBE000E51D4E /* AddToDoViewController.swift in Sources */,
 				16C13F661C32EE5D00E51D4E /* ViewController.swift in Sources */,
 				16C13F6C1C32EE5D00E51D4E /* ToDoApp.xcdatamodeld in Sources */,
 				16C13F641C32EE5D00E51D4E /* AppDelegate.swift in Sources */,
