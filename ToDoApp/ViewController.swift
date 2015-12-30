@@ -12,7 +12,12 @@ import CoreData
 class ViewController: UITableViewController {
     
     var dataFromCoreData = [String: [String: String]]()
+    // Konvertieren des Dictionaries(dataFromCoreData) in func tableView cellForRowAtIndexPath
+    // in
+    // mit indexPath.row als neuem Key
     var dataFromCoreDataWithIndexPathAsKey = [String: [String: String]]()
+    // Wird in Segue zu ShowDetailsViewController als Key übergeben, um die entsprechenden
+    // Dictionary-Einträge abzurufen
     var dictKeyIdentifier = Int.init()
     
     @IBOutlet var tableViewOutlet: UITableView!
