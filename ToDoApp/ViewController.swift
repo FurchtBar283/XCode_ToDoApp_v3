@@ -11,8 +11,9 @@ import CoreData
 
 class ViewController: UITableViewController {
     
-    //var toDoArray = ["Pizza backen", "Vokabeln lernen", "Grammatik lernen"]
     var dataFromCoreData = [String: [String : String]]()
+    var testDict = [String:[String:String]]()
+    var dictEntryIdentifier = Int.init()
     
     @IBOutlet var tableViewOutlet: UITableView!
     
@@ -25,7 +26,7 @@ class ViewController: UITableViewController {
         // Aktualisieren der TableView
         tableViewOutlet.reloadData()
         
-        
+        // Ausgaben zu Testzwecken
         /*
         print(self.dataFromCoreData["Optional(Bierhoff )"])
         print("blabla")
@@ -59,43 +60,22 @@ class ViewController: UITableViewController {
             if results.count > 0 {
                 for item in results as! [NSManagedObject] {
                     // ! behebt den Optional("...") Anzeigefehler
+                    /* Zwischenschritt: Zwischenspeichern der einzelnen Werte in Variablen
                     let name = item.valueForKey("toDoName")!
                     let descr = item.valueForKey("toDoDesc")!
                     let estim = item.valueForKey("toDoEstim")!
                     let doDate = item.valueForKey("toDoDate")!
+                    */
                     
-                    /*
-                    print(name)
-                    print(descr)
-                    print(estim)
-                    print(doDate)
-                    print("-----")
-                    */
-                    /*
-                    dataFromCoreData.updateValue(["toDoName":"\(name)"], forKey: "\(name)")
-                    dataFromCoreData.updateValue(["toDoDesc":"\(descr)"], forKey: "\(name)")
-                    dataFromCoreData.updateValue(["toDoEstim":"\(estim)"], forKey: "\(name)")
-                    dataFromCoreData.updateValue(["toDoDate":"\(doDate)"], forKey: "\(name)")
-                    */
-                    /*
-                    dataFromCoreData = [
-                        "\(name)": [
-                            "toDoName": "\(name)",
-                            "toDoDesc": "\(descr)",
-                            "toDoEstim": "\(estim)",
-                            "toDoDate": "\(doDate)"
-                        ]
-                    ]
-                    */
-                    dataFromCoreData["\(name)"] = ["toDoName": "\(name)",
-                        "toDoDesc": "\(descr)",
-                        "toDoEstim": "\(estim)",
-                        "toDoDate": "\(doDate)"]
+                    // Zwischenspeicherung der CoreDataWerte im Dictionary dataFromCoreData
+                    dataFromCoreData["\(item.valueForKey("toDoName")!)"] = ["toDoName": "\(item.valueForKey("toDoName")!)",
+                        "toDoDesc": "\(item.valueForKey("toDoDesc")!)",
+                        "toDoEstim": "\(item.valueForKey("toDoEstim")!)",
+                        "toDoDate": "\(item.valueForKey("toDoDate")!)"]
                     
                     //print(dataFromCoreData["\(name)"])
                 }
             }
-            
             
         } catch {
             print("Error while trying to fetch data from CoreData in function fetchDatabase")
@@ -151,16 +131,29 @@ class ViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("ToDoCell") as UITableViewCell!
         //cell.textLabel?.text = toDoArray[indexPath.row]
         let key   = Array(self.dataFromCoreData.keys)[indexPath.row]
-        // Aktueller Test um Daten mit Cell-Eintrag verbinden zu können
+        
+        // Test um Daten mit Cell-Eintrag verbinden zu können
         // Anfang
+        
         let value = Array(self.dataFromCoreData.values)[indexPath.row]
         print("VALUEVALUE")
         print(value)
         let indexPathAsString = String(indexPath.row)
-        let testDict: [String:[String:String]] = [indexPathAsString: value]
+        //let testDict: [String:[String:String]] = [indexPathAsString: value]
+        
+        // Speichern überschreibt leider
+        ////////////////
+        //Überarbeiten//
+        ////////////////
+        testDict = [indexPathAsString: value]
         print(testDict)
-        cell.textLabel?.text = key
+        ////////////////
+        //Überarbeiten//
+        ////////////////
+
         // Ende
+        
+        cell.textLabel?.text = key
         
         return cell
     }
@@ -168,6 +161,10 @@ class ViewController: UITableViewController {
     // Reagiert wenn eine Zelle angewählt wurde
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("Selected cell: \(indexPath.row)")
+        
+        // Idee: performSegueWithIdentifier (manueller Segue mit indexPath.row)
+        dictEntryIdentifier = indexPath.row
+        performSegueWithIdentifier("ShowDetails", sender: self)
     }
     
     // Diese Funktion setzt die entsprechende Zelle/Reihe auf editierbar
@@ -179,6 +176,30 @@ class ViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             print("Deleting cell: \(indexPath.row)")
+            
+            // Versuch Daten aus CoreData wieder zu löschen
+            /* http://www.learncoredata.com/create-retrieve-update-delete-data-with-core-data/
+            // 2
+            let appDelegateOnDelete = UIApplication.sharedApplication().delegate as! AppDelegate
+            let managedObjContext = appDelegateOnDelete.managedObjectContext
+            
+            // 3
+            managedObjContext.deleteObject(dataFromCoreData[indexPath.row])
+            appDelegateOnDelete.saveContext()
+            
+            // 4
+            dataFromCoreData.removeAtIndex(indexPath.row)
+            tableView.reloadData()
+            */
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowDetails" {
+            print("In prepareForSegue ShowDetails")
+            let destinationControllerShowDetails = segue.destinationViewController as! ShowDetailsViewController
+            destinationControllerShowDetails.indexPathHandedOver = dictEntryIdentifier
+            destinationControllerShowDetails.testDictInShowDetails = testDict
         }
     }
 }

@@ -59,33 +59,6 @@ class AddToDoViewController: UIViewController, UITextFieldDelegate {
                 print("Error while trying to save data in CoreData in function saveButtonClicked")
             }
             
-            // Daten aus CoreData abfragen
-            do {
-                // Request an die Entity "ToDos"
-                let request = NSFetchRequest(entityName: "ToDos")
-                // Rückgabewerte des Requests
-                let results = try context.executeFetchRequest(request)
-                
-                if results.count > 0 {
-                    for item in results as! [NSManagedObject] {
-                        let name = item.valueForKey("toDoName")
-                        let descr = item.valueForKey("toDoDesc")
-                        let estim = item.valueForKey("toDoEstim")
-                        let doDate = item.valueForKey("toDoDate")
-                        
-                        print(name)
-                        print(descr)
-                        print(estim)
-                        print(doDate)
-                        print("-----")
-                    }
-                }
-                
-                
-            } catch {
-                print("Error while trying to fetch data from CoreData in function saveButtonClicked")
-            }
-            
             // Textfelder wieder zurücksetzen
             toDoNameTextfieldOutlet.text = ""
             toDoDescriptionTextfieldOutlet.text = ""
