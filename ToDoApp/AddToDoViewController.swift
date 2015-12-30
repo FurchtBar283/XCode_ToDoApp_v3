@@ -24,58 +24,79 @@ class AddToDoViewController: UIViewController, UITextFieldDelegate {
     
     // Funktion handelt die Interaktion mit dem Save-Button
     @IBAction func saveButtonClicked(sender: UIButton) {
-        // Zugriff auf CoreData
-        let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        // ManagedObjectContext verwaltet sämtliche Datenobjekte
-        let context: NSManagedObjectContext = appDel.managedObjectContext
-        
-        // Ein neues ToDo anlegen für die Entity "ToDos" in CoreData
-        let newToDo = NSEntityDescription.insertNewObjectForEntityForName("ToDos", inManagedObjectContext: context)
-        newToDo.setValue(toDoNameAsString, forKey: "toDoName")
-        newToDo.setValue(toDoDescriptionAsString, forKey: "toDoDesc")
-        newToDo.setValue(toDoEstimatedTimeAsString, forKey: "toDoEstim")
-        newToDo.setValue(chosenDateAsString, forKey: "toDoDate")
-        
-        // Das ToDo der Entity hinzufügen
-        do {
-            try context.save()
-        } catch {
-            print("Error while trying to save data in CoreData in function saveButtonClicked")
-        }
-        
-        // Daten aus CoreData abfragen
-        do {
-            // Request an die Entity "ToDos"
-            let request = NSFetchRequest(entityName: "ToDos")
-            // Rückgabewerte des Requests
-            let results = try context.executeFetchRequest(request)
+        if toDoNameAsString == "" {
+            //print("Error: Giving the ToDo a name is a must")
+            let alert = UIAlertController(title: "Missing name", message: "Please add a name for the toDo.", preferredStyle: .Alert)
+            /* Funktion um über die DialogBox einen Namen hinzufügen zu können
+            let addNewAction = UIAlertAction(title: "Add", style: .Default){(_) in
+                let nameTextField = alert.textFields![0]
+            }*/
+            let cancelAction = UIAlertAction(title: "Ok", style: .Cancel, handler: nil)
             
-            if results.count > 0 {
-                for item in results as! [NSManagedObject] {
-                    let name = item.valueForKey("toDoName")
-                    let descr = item.valueForKey("toDoDesc")
-                    let estim = item.valueForKey("toDoEstim")
-                    let doDate = item.valueForKey("toDoDate")
-                    
-                    print(name)
-                    print(descr)
-                    print(estim)
-                    print(doDate)
-                    print("-----")
-                }
+            //alert.addTextFieldWithConfigurationHandler(nil)
+            
+            //alert.addAction(addNewAction)
+            alert.addAction(cancelAction)
+            
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            // Zugriff auf CoreData
+            let appDel: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            // ManagedObjectContext verwaltet sämtliche Datenobjekte
+            let context: NSManagedObjectContext = appDel.managedObjectContext
+            
+            // Ein neues ToDo anlegen für die Entity "ToDos" in CoreData
+            let newToDo = NSEntityDescription.insertNewObjectForEntityForName("ToDos", inManagedObjectContext: context)
+            newToDo.setValue(toDoNameAsString, forKey: "toDoName")
+            newToDo.setValue(toDoDescriptionAsString, forKey: "toDoDesc")
+            newToDo.setValue(toDoEstimatedTimeAsString, forKey: "toDoEstim")
+            newToDo.setValue(chosenDateAsString, forKey: "toDoDate")
+            
+            // Das ToDo der Entity hinzufügen
+            do {
+                try context.save()
+            } catch {
+                print("Error while trying to save data in CoreData in function saveButtonClicked")
             }
             
+            // Daten aus CoreData abfragen
+            do {
+                // Request an die Entity "ToDos"
+                let request = NSFetchRequest(entityName: "ToDos")
+                // Rückgabewerte des Requests
+                let results = try context.executeFetchRequest(request)
+                
+                if results.count > 0 {
+                    for item in results as! [NSManagedObject] {
+                        let name = item.valueForKey("toDoName")
+                        let descr = item.valueForKey("toDoDesc")
+                        let estim = item.valueForKey("toDoEstim")
+                        let doDate = item.valueForKey("toDoDate")
+                        
+                        print(name)
+                        print(descr)
+                        print(estim)
+                        print(doDate)
+                        print("-----")
+                    }
+                }
+                
+                
+            } catch {
+                print("Error while trying to fetch data from CoreData in function saveButtonClicked")
+            }
             
-        } catch {
-            print("Error while trying to fetch data from CoreData in function saveButtonClicked")
+            // Textfelder wieder zurücksetzen
+            toDoNameTextfieldOutlet.text = ""
+            toDoDescriptionTextfieldOutlet.text = ""
+            toDoEstimatedTimeTextfieldOutlet.text = ""
+            chosenDateOutlet.text = ""
+            
+            // Nach Klicken des Save Buttons wird ein Segue ausgeführt zurück zur TableView
+            // Manuell angelegt
+            performSegueWithIdentifier("SaveButton", sender: self)
+            
         }
-        
-        // Textfelder wieder zurücksetzen
-        toDoNameTextfieldOutlet.text = ""
-        toDoDescriptionTextfieldOutlet.text = ""
-        toDoEstimatedTimeTextfieldOutlet.text = ""
-        chosenDateOutlet.text = ""
-        
     }
     
     
@@ -107,6 +128,8 @@ class AddToDoViewController: UIViewController, UITextFieldDelegate {
             destinationController.toDoName = toDoNameAsString
             destinationController.toDoDescription = toDoDescriptionAsString
             destinationController.toDoEstimatedTime = toDoEstimatedTimeAsString
+        } else if segue.identifier == "SaveButton" {
+            print("segue.identifier: \(segue.identifier)")
         }
     }
  

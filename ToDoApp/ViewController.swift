@@ -14,11 +14,18 @@ class ViewController: UITableViewController {
     //var toDoArray = ["Pizza backen", "Vokabeln lernen", "Grammatik lernen"]
     var dataFromCoreData = [String: [String : String]]()
     
+    @IBOutlet var tableViewOutlet: UITableView!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        // DataRequest an CoreData
         fetchDatabase()
+        // Aktualisieren der TableView
+        tableViewOutlet.reloadData()
+        
+        
         /*
         print(self.dataFromCoreData["Optional(Bierhoff )"])
         print("blabla")
@@ -29,7 +36,6 @@ class ViewController: UITableViewController {
         print(text)
         print(text2)
         */
-
     }
 
     override func didReceiveMemoryWarning() {
