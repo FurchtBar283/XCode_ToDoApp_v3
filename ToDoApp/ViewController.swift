@@ -11,9 +11,9 @@ import CoreData
 
 class ViewController: UITableViewController {
     
-    var dataFromCoreData = [String: [String : String]]()
-    var testDict = [String:[String:String]]()
-    var dictEntryIdentifier = Int.init()
+    var dataFromCoreData = [String: [String: String]]()
+    var dataFromCoreDataWithIndexPathAsKey = [String: [String: String]]()
+    var dictKeyIdentifier = Int.init()
     
     @IBOutlet var tableViewOutlet: UITableView!
     
@@ -21,6 +21,7 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
         // DataRequest an CoreData
         fetchDatabase()
         // Aktualisieren der TableView
@@ -129,30 +130,20 @@ class ViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ToDoCell") as UITableViewCell!
-        //cell.textLabel?.text = toDoArray[indexPath.row]
+        
+        // Dictionary-Werte aus CoreData umwandeln und zwischenspeichern
+        // Den Key.. (hier: toDoName)
         let key   = Array(self.dataFromCoreData.keys)[indexPath.row]
-        
-        // Test um Daten mit Cell-Eintrag verbinden zu können
-        // Anfang
-        
+        // ..und die dazugehörigen Werte (hier: toDoName, toDoDescr, toDoEstim, toDoDate)
         let value = Array(self.dataFromCoreData.values)[indexPath.row]
-        print("VALUEVALUE")
-        print(value)
+        
+        // indexPath als neuen eindeutigen identifier bzw Key..
+        // ..für den jeweiligen Eintrag im neuen Dictionary speichern
         let indexPathAsString = String(indexPath.row)
-        //let testDict: [String:[String:String]] = [indexPathAsString: value]
+        // Dem neuen Dictionary(Mutable) mittels Key indexPathAsString die Werte zuweisen
+        dataFromCoreDataWithIndexPathAsKey[indexPathAsString] = value
         
-        // Speichern überschreibt leider
-        ////////////////
-        //Überarbeiten//
-        ////////////////
-        testDict = [indexPathAsString: value]
-        print(testDict)
-        ////////////////
-        //Überarbeiten//
-        ////////////////
-
-        // Ende
-        
+        // Der Cell den Key(toDoName) vom Dictionary(dataFromCoreData) als Text zuweisen
         cell.textLabel?.text = key
         
         return cell
@@ -163,7 +154,7 @@ class ViewController: UITableViewController {
         print("Selected cell: \(indexPath.row)")
         
         // Idee: performSegueWithIdentifier (manueller Segue mit indexPath.row)
-        dictEntryIdentifier = indexPath.row
+        dictKeyIdentifier = indexPath.row
         performSegueWithIdentifier("ShowDetails", sender: self)
     }
     
@@ -196,10 +187,9 @@ class ViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowDetails" {
-            print("In prepareForSegue ShowDetails")
             let destinationControllerShowDetails = segue.destinationViewController as! ShowDetailsViewController
-            destinationControllerShowDetails.indexPathHandedOver = dictEntryIdentifier
-            destinationControllerShowDetails.testDictInShowDetails = testDict
+            destinationControllerShowDetails.indexPathHandedOver = dictKeyIdentifier
+            destinationControllerShowDetails.dataFromCoreDataHandedOver = dataFromCoreDataWithIndexPathAsKey
         }
     }
 }

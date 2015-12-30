@@ -88,7 +88,7 @@ class AddToDoViewController: UIViewController, UITextFieldDelegate {
             toDoEstimatedTimeAsString = toDoEstimatedTimeTextfieldOutlet.text!
             toDoEstimatedTimeTextfieldOutlet.resignFirstResponder()
         default:
-            "Wrong case in func textFieldShouldReturn AddToDoViewController"
+            print("Wrong case in func textFieldShouldReturn AddToDoViewController")
         }
 
         return true
@@ -109,6 +109,7 @@ class AddToDoViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
         toDoNameTextfieldOutlet.text = toDoNameAsString
         toDoDescriptionTextfieldOutlet.text = toDoDescriptionAsString
         toDoEstimatedTimeTextfieldOutlet.text = toDoEstimatedTimeAsString

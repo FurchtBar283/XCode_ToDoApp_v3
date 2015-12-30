@@ -11,7 +11,7 @@ import UIKit
 class ShowDetailsViewController: UIViewController {
     
     var indexPathHandedOver = Int.init()
-    var testDictInShowDetails = [String:[String:String]]()
+    var dataFromCoreDataHandedOver = [String:[String:String]]()
     
     @IBOutlet weak var nameLabelOutlet: UILabel!
     @IBOutlet weak var descriptionLabelOutlet: UILabel!
@@ -22,13 +22,15 @@ class ShowDetailsViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        // Solved
+        /*
         print("In ShowDetailsViewController")
         print(testDictInShowDetails)
         // Statisch gecoded, Speicherung des Dicts läuft noch nicht in cellForIndex...
-        indexPathHandedOver = 6
+        //indexPathHandedOver = 6
+        */
         
-        // works
-        let givenToDo = testDictInShowDetails["\(indexPathHandedOver)"]!
+        let givenToDo = dataFromCoreDataHandedOver["\(indexPathHandedOver)"]!
         nameLabelOutlet.text = givenToDo["toDoName"]
         descriptionLabelOutlet.text = givenToDo["toDoDesc"]
         estimatedTimeLabelOutlet.text = givenToDo["toDoEstim"]! + " Minuten"
