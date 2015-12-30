@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		167CE15A1C34723B00DD97CB /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167CE1591C34723B00DD97CB /* NSDateExtension.swift */; };
 		16C13F641C32EE5D00E51D4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C13F631C32EE5D00E51D4E /* AppDelegate.swift */; };
 		16C13F661C32EE5D00E51D4E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C13F651C32EE5D00E51D4E /* ViewController.swift */; };
 		16C13F691C32EE5D00E51D4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16C13F671C32EE5D00E51D4E /* Main.storyboard */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		167CE1591C34723B00DD97CB /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 		16C13F601C32EE5D00E51D4E /* ToDoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16C13F631C32EE5D00E51D4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		16C13F651C32EE5D00E51D4E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				16C13F961C32FC2F00E51D4E /* ChooseDateViewController.swift */,
 				16E849CB1C33FF1C00F70ABF /* ShowDetailsViewController.swift */,
 				16C4B8EC1C344DCE0078DB38 /* NochOffen.rtf */,
+				167CE1591C34723B00DD97CB /* NSDateExtension.swift */,
 			);
 			path = ToDoApp;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 			files = (
 				16C13F971C32FC2F00E51D4E /* ChooseDateViewController.swift in Sources */,
 				16C13F951C32FBE000E51D4E /* AddToDoViewController.swift in Sources */,
+				167CE15A1C34723B00DD97CB /* NSDateExtension.swift in Sources */,
 				16C13F661C32EE5D00E51D4E /* ViewController.swift in Sources */,
 				16C13F6C1C32EE5D00E51D4E /* ToDoApp.xcdatamodeld in Sources */,
 				16E849CC1C33FF1C00F70ABF /* ShowDetailsViewController.swift in Sources */,
