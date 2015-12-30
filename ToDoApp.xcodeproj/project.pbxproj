@@ -17,6 +17,7 @@
 		16C13F871C32EE5D00E51D4E /* ToDoAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C13F861C32EE5D00E51D4E /* ToDoAppUITests.swift */; };
 		16C13F951C32FBE000E51D4E /* AddToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C13F941C32FBE000E51D4E /* AddToDoViewController.swift */; };
 		16C13F971C32FC2F00E51D4E /* ChooseDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C13F961C32FC2F00E51D4E /* ChooseDateViewController.swift */; };
+		16C4B8ED1C344DCE0078DB38 /* NochOffen.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 16C4B8EC1C344DCE0078DB38 /* NochOffen.rtf */; };
 		16E849C81C33EB3600F70ABF /* logo-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E849C71C33EB3600F70ABF /* logo-icon.png */; };
 		16E849CA1C33EB4500F70ABF /* todo-manager-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E849C91C33EB4500F70ABF /* todo-manager-icon.png */; };
 		16E849CC1C33FF1C00F70ABF /* ShowDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E849CB1C33FF1C00F70ABF /* ShowDetailsViewController.swift */; };
@@ -56,6 +57,7 @@
 		16C13F881C32EE5D00E51D4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		16C13F941C32FBE000E51D4E /* AddToDoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddToDoViewController.swift; sourceTree = "<group>"; };
 		16C13F961C32FC2F00E51D4E /* ChooseDateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseDateViewController.swift; sourceTree = "<group>"; };
+		16C4B8EC1C344DCE0078DB38 /* NochOffen.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = NochOffen.rtf; sourceTree = "<group>"; };
 		16E849C71C33EB3600F70ABF /* logo-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-icon.png"; sourceTree = "<group>"; };
 		16E849C91C33EB4500F70ABF /* todo-manager-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "todo-manager-icon.png"; sourceTree = "<group>"; };
 		16E849CB1C33FF1C00F70ABF /* ShowDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDetailsViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				16C13F941C32FBE000E51D4E /* AddToDoViewController.swift */,
 				16C13F961C32FC2F00E51D4E /* ChooseDateViewController.swift */,
 				16E849CB1C33FF1C00F70ABF /* ShowDetailsViewController.swift */,
+				16C4B8EC1C344DCE0078DB38 /* NochOffen.rtf */,
 			);
 			path = ToDoApp;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				16C13F691C32EE5D00E51D4E /* Main.storyboard in Resources */,
 				16E849C81C33EB3600F70ABF /* logo-icon.png in Resources */,
 				16E849CA1C33EB4500F70ABF /* todo-manager-icon.png in Resources */,
+				16C4B8ED1C344DCE0078DB38 /* NochOffen.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

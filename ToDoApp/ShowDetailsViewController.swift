@@ -22,14 +22,6 @@ class ShowDetailsViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        // Solved
-        /*
-        print("In ShowDetailsViewController")
-        print(testDictInShowDetails)
-        // Statisch gecoded, Speicherung des Dicts läuft noch nicht in cellForIndex...
-        //indexPathHandedOver = 6
-        */
-        
         let givenToDo = dataFromCoreDataHandedOver["\(indexPathHandedOver)"]!
         nameLabelOutlet.text = givenToDo["toDoName"]
         descriptionLabelOutlet.text = givenToDo["toDoDesc"]

@@ -9,19 +9,18 @@
 import UIKit
 
 class ChooseDateViewController: UIViewController {
-    //var date:NSDate = NSDate()
+    
     var dateAsString = ""
     var toDoName = ""
     var toDoDescription = ""
     var toDoEstimatedTime = ""
     
     @IBAction func dateChosenAction(sender: UIDatePicker) {
-        //date = sender.date
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy hh:mm"
-        let dateString = dateFormatter.stringFromDate(sender.date)
-        //print(dateString)
-        dateAsString = dateString
+        // sender.date ist vom Datentyp NSDate
+        dateAsString = dateFormatter.stringFromDate(sender.date)
+        //print(dateAsString)
     }
   
     override func viewDidLoad() {
