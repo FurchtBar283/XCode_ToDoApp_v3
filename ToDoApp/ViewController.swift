@@ -20,6 +20,13 @@ class ViewController: UITableViewController {
     // .. Dictionary-Einträge abzurufen.
     var dictKeyIdentifier = Int.init()
     
+    // Test.
+    var dataFromCoreDataSectionActive = [String: [String: String]]()
+    var dataFromCoreDataSectionDeprecated = [String: [String: String]]()
+    var amountOfToDos: Int = 0
+    var countForSectionActive: Int = 0
+    var countForSectionDeprecated: Int = 0
+    
     @IBOutlet var tableViewOutlet: UITableView!
     
 
@@ -74,10 +81,11 @@ class ViewController: UITableViewController {
                     */
                     
                     // Zwischenspeicherung der CoreDataWerte im Dictionary dataFromCoreData.
-                    dataFromCoreData["\(item.valueForKey("toDoName")!)"] = ["toDoName": "\(item.valueForKey("toDoName")!)",
+                    dataFromCoreData["\(amountOfToDos)"] = ["toDoName": "\(item.valueForKey("toDoName")!)",
                         "toDoDesc": "\(item.valueForKey("toDoDesc")!)",
                         "toDoEstim": "\(item.valueForKey("toDoEstim")!)",
                         "toDoDate": "\(item.valueForKey("toDoDate")!)"]
+                    amountOfToDos++
                     
                     //print(dataFromCoreData["\(name)"])
                 }
@@ -85,6 +93,25 @@ class ViewController: UITableViewController {
             
         } catch {
             print("Error while trying to fetch data from CoreData in function fetchDatabase")
+        }
+        divideDataFromCoreDataInSections(dataFromCoreData)
+    }
+    
+    func divideDataFromCoreDataInSections(coreDataDictionary: [String: [String: String]]) {
+        let countEntries = coreDataDictionary.count
+        if countEntries == amountOfToDos {
+            print("Gleich viele")
+        }
+        
+  
+        for item in 0..<amountOfToDos {
+            print(item)
+            let value = Array(coreDataDictionary.values)[item]
+            if checkIfToDoDateIsInPast(value["toDoDate"]!) {
+                countForSectionDeprecated++
+            } else {
+                countForSectionActive++
+            }
         }
     }
     
@@ -141,8 +168,24 @@ class ViewController: UITableViewController {
     
     // Diese Funktion setzt die Anzahl der Sections innerhalb der TableView.
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
+    
+    // Teil des neuen Tests.
+    // Anfang..
+    // Diese Funktion setzt die Titel der jeweiligen Sections.
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var sectionHeader = ""
+        
+        if section == 0 {
+            sectionHeader = "Active"
+        } else if section == 1 {
+            sectionHeader = "Deprecated"
+        }
+        
+        return sectionHeader
+    }
+    // ..Ende!
     
     // Diese Funktion legt die Anzahl der Reihen/Cells pro Section fest.
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -151,17 +194,29 @@ class ViewController: UITableViewController {
         let numberOfCells = self.fetchedResultsController.fetchedObjects?.count
         return numberOfCells!
         */
-        return dataFromCoreData.count
+        
+        // Teil des neuen Tests.
+        var rowCount: Int = 0
+        if section == 0 {
+            rowCount = countForSectionActive
+        } else if section == 1 {
+            rowCount = countForSectionDeprecated
+        }
+        
+        //return dataFromCoreData.count
+        return rowCount
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        //print(indexPath.section)
         let cell = tableView.dequeueReusableCellWithIdentifier("ToDoCell") as UITableViewCell!
         
         // Dictionary-Werte aus CoreData umwandeln und zwischenspeichern.
         // Den Key.. (hier: toDoName)
-        let key   = Array(self.dataFromCoreData.keys)[indexPath.row]
+        //let key   = Array(self.dataFromCoreData.keys)[indexPath.row]
         // ..und die dazugehörigen Werte (hier: toDoName, toDoDescr, toDoEstim, toDoDate).
         let value = Array(self.dataFromCoreData.values)[indexPath.row]
+        print(indexPath.row)
         
         // indexPath als neuen eindeutigen identifier bzw Key..
         // ..für den jeweiligen Eintrag im neuen Dictionary speichern.
@@ -171,15 +226,29 @@ class ViewController: UITableViewController {
         
         // Datum der übergebenen ToDo zwischenspeichern..
         let toDoDate = dataFromCoreDataWithIndexPathAsKey[indexPathAsString]!["toDoDate"]!
+        let toDoName = dataFromCoreDataWithIndexPathAsKey[indexPathAsString]!["toDoName"]!
         // .. und prüfen, ob es in der Vergangenheit liegt..
-        if checkIfToDoDateIsInPast(toDoDate) {
-            // .. falls ja, " (deprecated)" anhängen..
-            cell.textLabel?.text = key + " (deprecated)"
-            // .. und den Text rot einfärben.
-            cell.textLabel?.textColor = UIColor.redColor()
-        } else {
-            // Der Cell den Key(toDoName) vom Dictionary(dataFromCoreData) als Text zuweisen.
-            cell.textLabel?.text = key
+        if indexPath.section == 0 {
+            if checkIfToDoDateIsInPast(toDoDate) {
+                // .. falls ja, " (deprecated)" anhängen..
+                cell.textLabel?.text = toDoName + " (deprecated)"
+                // .. und den Text rot einfärben.
+                cell.textLabel?.textColor = UIColor.redColor()
+            } else {
+                // Der Cell den Key(toDoName) vom Dictionary(dataFromCoreData) als Text zuweisen.
+                cell.textLabel?.text = toDoName
+            }
+            
+        } else if indexPath.section == 1 {
+            if checkIfToDoDateIsInPast(toDoDate) {
+                // .. falls ja, " (deprecated)" anhängen..
+                cell.textLabel?.text = toDoName + " (deprecated)"
+                // .. und den Text rot einfärben.
+                cell.textLabel?.textColor = UIColor.redColor()
+            } else {
+                // Der Cell den Key(toDoName) vom Dictionary(dataFromCoreData) als Text zuweisen.
+                cell.textLabel?.text = toDoName
+            }
         }
         
         // Alte Umsetzung der Idee.
