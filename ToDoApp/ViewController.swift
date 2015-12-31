@@ -22,6 +22,7 @@ class ViewController: UITableViewController {
     
     // Test.
     var dataFromCoreDataSectionToday = [String: [String: String]]()
+    var dataFromCoreDataSectionTomorrow = [String: [String: String]]()
     var dataFromCoreDataSectionCurrentWeek = [String: [String: String]]()
     var dataFromCoreDataSectionNextWeek = [String: [String: String]]()
     var dataFromCoreDataSectionFarFarAway = [String: [String: String]]()
@@ -29,6 +30,7 @@ class ViewController: UITableViewController {
     
     // Zählvariablen für die Anzahl an Einträgen pro Sektion
     var numberOfRowsInToday: Int = 4
+    var numberOfRowsInTomorrow: Int = 4
     var numberOfRowsInCurrentWeek: Int = 4
     var numberOfRowsInNextWeek: Int = 4
     var numberOfRowsInFarFarAway: Int = 4
@@ -84,6 +86,63 @@ class ViewController: UITableViewController {
                     
                     dateFromCoreDataAsString = dataFromCoreData["\(amountOfToDos)"]!["toDoDate"]!
                     dateFromCoreDataAsNSDate = dateFromCoreDataAsString.convertStringToNSDate(dateFromCoreDataAsString)
+                    
+                    // Test ob erkannt wird, falls ein Datum heute ist.
+                    // Funktioniert
+                    /*
+                    print(dateFromCoreDataAsString)
+                    print(dateFromCoreDataAsNSDate.isToday(dateFromCoreDataAsNSDate))
+                    print(dataFromCoreData["\(amountOfToDos)"])
+                    */
+                    
+                    // Test ob erkannt wird, falls ein Datum in der aktuellen Woche liegt.
+                    // Funktioniert, außer bei Jahresübergangswoche
+                    /*
+                    print(dateFromCoreDataAsString)
+                    print(dateFromCoreDataAsNSDate.isInCurrentWeek(dateFromCoreDataAsNSDate))
+                    //print(dataFromCoreData["\(amountOfToDos)"])
+                    */
+                    
+                    // Test ob erkannt wird, falls ein Datum in der nächsten Woche liegt.
+                    // Funktioniert
+                    /*
+                    print(dateFromCoreDataAsString)
+                    print(dateFromCoreDataAsNSDate.isNextWeek(dateFromCoreDataAsNSDate))
+                    //print(dataFromCoreData["\(amountOfToDos)"])
+                    */
+                    
+                    // Test ob erkannt wird, falls ein Datum frühestens in der übernächsten Woche liegt.
+                    print(dateFromCoreDataAsString)
+                    print(dateFromCoreDataAsNSDate.isFarFarAway(dateFromCoreDataAsNSDate))
+                    //print(dataFromCoreData["\(amountOfToDos)"])
+                    print("-----")
+                    
+                    
+                    // Something like
+                    /* How to identify each entry?
+                    if givenDate.isBeforeDate(givenDate) {
+                        dataFromCoreDataSectionToday
+                        numberOfRowsInToday++
+                    } else if givenDate.isInCurrentWeek(givenDate) {
+                        // if givenDate.isDateInToday(givenDate) {
+                        if givenDate.isToday(givenDate) {
+                            dataFromCoreDataSectionToday
+                            numberOfRowsInToday++
+                        } else if givenDate.isDateInTomorrow(givenDate) {
+                            dataFromCoreDataSectionTomorrow
+                            numberOfRowsInTomorrow++
+                        } else {
+                            dataFromCoreDataSectionCurrentWeek
+                            numberOfRowsInCurrentWeek++
+                        }
+                    } else if givenDate.isNextWeek(givenDate) {
+                        dataFromCoreDataSectionNextWeek
+                        numberOfRowsInNextWeek++
+                    } else {
+                        dataFromCoreDataSectionFarFarAway
+                        numberOfRowsInFarFarAway++
+                    }
+                    */
                     
                     // if date zugehörig zu section 0-4 -> Arbeiten in NSDateExtension
                     // split in dicts
