@@ -10,7 +10,8 @@ import Foundation
 
 extension String {
  
-  func convertStringToNSDate(stringToConvert: String) -> NSDate {
+    // Funktion konvertiert ein Objekt vom Typ NSDate in einen String des Formats "dd.MM.yyyy hh:mm"
+    func convertStringToNSDate(stringToConvert: String) -> NSDate {
         var convertedString: NSDate = NSDate.init()
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy hh:mm"
@@ -22,6 +23,8 @@ extension String {
         return convertedString
     }
     
+    // Macht mehr Sinn in NSDateExtension -> moved
+    /*
     func convertNSDateToString(nsDateToConvert: NSDate) -> String {
         var convertedNSDate: String = ""
         let dateFormatter = NSDateFormatter()
@@ -31,4 +34,5 @@ extension String {
         
         return convertedNSDate
     }
+    */
 }

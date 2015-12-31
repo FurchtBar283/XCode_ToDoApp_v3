@@ -10,18 +10,7 @@ import Foundation
 
 extension NSDate {
     
-    func convertStringToNSDate(stringToConvert: String) -> NSDate {
-        var convertedString: NSDate = NSDate.init()
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy hh:mm"
-        
-        if dateFormatter.dateFromString(stringToConvert) != nil {
-            convertedString = dateFormatter.dateFromString(stringToConvert)!
-        }
-        
-        return convertedString
-    }
-    
+    // Funktion konvertiert ein Objekt vom Typ NSDate in einen String des Formats "dd.MM.yyyy hh:mm"
     func convertNSDateToString(nsDateToConvert: NSDate) -> String {
         var convertedNSDate: String = ""
         let dateFormatter = NSDateFormatter()
@@ -102,6 +91,8 @@ extension NSDate {
             // Test-Ausgabe.
             //print("In func isInCurrentWeek in NSDateExtension NSComparisonResult.OrderedDescending")
         }
+        
+        // Funktioniert leider bei Woche des Jahreswechsels nicht.
         /*
         if isInCurrentWeek == true {
             let yearComparisonResult = cal.compareDate(dateToCompare, toDate: NSDate(), toUnitGranularity: NSCalendarUnit.Year)

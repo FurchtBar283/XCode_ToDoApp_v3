@@ -16,7 +16,7 @@ class ChooseDateViewController: UIViewController {
     var toDoEstimatedTime = ""
     
     @IBAction func dateChosenAction(sender: UIDatePicker) {
-        dateAsString = dateAsString.convertNSDateToString(sender.date)
+        dateAsString = NSDate().convertNSDateToString(sender.date)
     }
   
     override func viewDidLoad() {

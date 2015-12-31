@@ -93,6 +93,7 @@ class ViewController: UITableViewController {
                     print(dateFromCoreDataAsString)
                     print(dateFromCoreDataAsNSDate.isToday(dateFromCoreDataAsNSDate))
                     print(dataFromCoreData["\(amountOfToDos)"])
+                    print("-----")
                     */
                     
                     // Test ob erkannt wird, falls ein Datum in der aktuellen Woche liegt.
@@ -101,6 +102,7 @@ class ViewController: UITableViewController {
                     print(dateFromCoreDataAsString)
                     print(dateFromCoreDataAsNSDate.isInCurrentWeek(dateFromCoreDataAsNSDate))
                     //print(dataFromCoreData["\(amountOfToDos)"])
+                    print("-----")
                     */
                     
                     // Test ob erkannt wird, falls ein Datum in der nächsten Woche liegt.
@@ -109,13 +111,17 @@ class ViewController: UITableViewController {
                     print(dateFromCoreDataAsString)
                     print(dateFromCoreDataAsNSDate.isNextWeek(dateFromCoreDataAsNSDate))
                     //print(dataFromCoreData["\(amountOfToDos)"])
+                    print("-----")
                     */
                     
                     // Test ob erkannt wird, falls ein Datum frühestens in der übernächsten Woche liegt.
+                    // Funktioniert
+                    /*
                     print(dateFromCoreDataAsString)
                     print(dateFromCoreDataAsNSDate.isFarFarAway(dateFromCoreDataAsNSDate))
                     //print(dataFromCoreData["\(amountOfToDos)"])
                     print("-----")
+                    */
                     
                     
                     // Something like
@@ -231,7 +237,7 @@ class ViewController: UITableViewController {
     
     // Diese Funktion setzt die Anzahl der Sections innerhalb der TableView.
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 4
+        return 5
     }
     
     // Teil des neuen Tests.
@@ -244,13 +250,15 @@ class ViewController: UITableViewController {
         case 0:
             sectionHeader = "Today"
         case 1:
-            sectionHeader = "Current week"
+            sectionHeader = "Tomorrow"
         case 2:
-            sectionHeader = "Next week"
+            sectionHeader = "Current week"
         case 3:
+            sectionHeader = "Next week"
+        case 4:
             sectionHeader = "Far far away"
         default:
-            "Error in tableView titleForHeaderInSection in ViewController"
+            print("Error in tableView titleForHeaderInSection in ViewController")
         }
         
         return sectionHeader
@@ -271,13 +279,15 @@ class ViewController: UITableViewController {
         case 0:
             rowCount = numberOfRowsInToday
         case 1:
-            rowCount = numberOfRowsInCurrentWeek
+            rowCount = numberOfRowsInTomorrow
         case 2:
-            rowCount = numberOfRowsInNextWeek
+            rowCount = numberOfRowsInCurrentWeek
         case 3:
+            rowCount = numberOfRowsInNextWeek
+        case 4:
             rowCount = numberOfRowsInFarFarAway
         default:
-            "Error in tableView numberOfRowsInSection in ViewController"
+            print("Error in tableView numberOfRowsInSection in ViewController")
         }
         
         return rowCount
@@ -293,11 +303,22 @@ class ViewController: UITableViewController {
         // ..und die dazugehörigen Werte (hier: toDoName, toDoDescr, toDoEstim, toDoDate).
         //let value = Array(self.dataFromCoreData.values)[indexPath.row]
         
-        if indexPath.section == 0 {
-            cell.textLabel?.text = "Active"
-        } else {
-            cell.textLabel?.text = "Deprecated"
+        switch indexPath.section {
+        case 0:
+            cell.textLabel?.text = "Today"
+            // Speichern in neuem Dict
+        case 1:
+            cell.textLabel?.text = "Tomorrow"
+        case 2:
+            cell.textLabel?.text = "Current Week"
+        case 3:
+            cell.textLabel?.text = "Next Week"
+        case 4:
+            cell.textLabel?.text = "Far far away"
+        default:
+            print("Error in tableView cellForRowAtIndexPath in ViewController")
         }
+        
         /*
         
         // indexPath als neuen eindeutigen identifier bzw Key..
