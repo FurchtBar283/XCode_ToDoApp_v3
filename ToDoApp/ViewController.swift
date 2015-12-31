@@ -12,13 +12,10 @@ import CoreData
 class ViewController: UITableViewController {
     
     var dataFromCoreData = [String: [String: String]]()
-    // Konvertieren des Dictionaries(dataFromCoreData) in func tableView cellForRowAtIndexPath..
-    // .. in dataFromCoreDataWithIndexPathAsKey..
-    // .. mit indexPath.row als neuem Key.
-    var dataFromCoreDataWithIndexPathAsKey = [String: [String: String]]()
-    // Wird in Segue zu ShowDetailsViewController als Key übergeben, um die entsprechenden..
-    // .. Dictionary-Einträge abzurufen.
-    var dictKeyIdentifier = Int.init()
+    var sectionIdentifier = Int.init()
+    var indexPathIdentifier = Int.init()
+    
+    var sectionHeaders = ["Today", "Tomorrow", "Current week", "Next week", "Far far away"]
     
     // Test.
     var dataFromCoreDataSectionToday = [String: [String: String]]()
@@ -27,13 +24,15 @@ class ViewController: UITableViewController {
     var dataFromCoreDataSectionNextWeek = [String: [String: String]]()
     var dataFromCoreDataSectionFarFarAway = [String: [String: String]]()
     var amountOfToDos: Int = 0
+    var iterateToDos: Int = 0
+    var dataFromCoreDataIterated = [String: [String: String]]()
     
     // Zählvariablen für die Anzahl an Einträgen pro Sektion
-    var numberOfRowsInToday: Int = 4
-    var numberOfRowsInTomorrow: Int = 4
-    var numberOfRowsInCurrentWeek: Int = 4
-    var numberOfRowsInNextWeek: Int = 4
-    var numberOfRowsInFarFarAway: Int = 4
+    var numberOfRowsInToday: Int = 0
+    var numberOfRowsInTomorrow: Int = 0
+    var numberOfRowsInCurrentWeek: Int = 0
+    var numberOfRowsInNextWeek: Int = 0
+    var numberOfRowsInFarFarAway: Int = 0
     var dateFromCoreDataAsString: String = ""
     var dateFromCoreDataAsNSDate: NSDate = NSDate.init()
     
@@ -87,71 +86,7 @@ class ViewController: UITableViewController {
                     dateFromCoreDataAsString = dataFromCoreData["\(amountOfToDos)"]!["toDoDate"]!
                     dateFromCoreDataAsNSDate = dateFromCoreDataAsString.convertStringToNSDate(dateFromCoreDataAsString)
                     
-                    // Test ob erkannt wird, falls ein Datum heute ist.
-                    // Funktioniert
-                    /*
-                    print(dateFromCoreDataAsString)
-                    print(dateFromCoreDataAsNSDate.isToday(dateFromCoreDataAsNSDate))
-                    print(dataFromCoreData["\(amountOfToDos)"])
-                    print("-----")
-                    */
-                    
-                    // Test ob erkannt wird, falls ein Datum in der aktuellen Woche liegt.
-                    // Funktioniert, außer bei Jahresübergangswoche
-                    /*
-                    print(dateFromCoreDataAsString)
-                    print(dateFromCoreDataAsNSDate.isInCurrentWeek(dateFromCoreDataAsNSDate))
-                    //print(dataFromCoreData["\(amountOfToDos)"])
-                    print("-----")
-                    */
-                    
-                    // Test ob erkannt wird, falls ein Datum in der nächsten Woche liegt.
-                    // Funktioniert
-                    /*
-                    print(dateFromCoreDataAsString)
-                    print(dateFromCoreDataAsNSDate.isNextWeek(dateFromCoreDataAsNSDate))
-                    //print(dataFromCoreData["\(amountOfToDos)"])
-                    print("-----")
-                    */
-                    
-                    // Test ob erkannt wird, falls ein Datum frühestens in der übernächsten Woche liegt.
-                    // Funktioniert
-                    /*
-                    print(dateFromCoreDataAsString)
-                    print(dateFromCoreDataAsNSDate.isFarFarAway(dateFromCoreDataAsNSDate))
-                    //print(dataFromCoreData["\(amountOfToDos)"])
-                    print("-----")
-                    */
-                    
-                    
-                    // Something like
-                    /* How to identify each entry?
-                    if givenDate.isBeforeDate(givenDate) {
-                        dataFromCoreDataSectionToday
-                        numberOfRowsInToday++
-                    } else if givenDate.isInCurrentWeek(givenDate) {
-                        // if givenDate.isDateInToday(givenDate) {
-                        if givenDate.isToday(givenDate) {
-                            dataFromCoreDataSectionToday
-                            numberOfRowsInToday++
-                        } else if givenDate.isDateInTomorrow(givenDate) {
-                            dataFromCoreDataSectionTomorrow
-                            numberOfRowsInTomorrow++
-                        } else {
-                            dataFromCoreDataSectionCurrentWeek
-                            numberOfRowsInCurrentWeek++
-                        }
-                    } else if givenDate.isNextWeek(givenDate) {
-                        dataFromCoreDataSectionNextWeek
-                        numberOfRowsInNextWeek++
-                    } else {
-                        dataFromCoreDataSectionFarFarAway
-                        numberOfRowsInFarFarAway++
-                    }
-                    */
-                    
-                    // if date zugehörig zu section 0-4 -> Arbeiten in NSDateExtension
-                    // split in dicts
+                    countNumberOfRowsInSections()
                     
                     amountOfToDos++
                     
@@ -162,54 +97,73 @@ class ViewController: UITableViewController {
         } catch {
             print("Error while trying to fetch data from CoreData in function fetchDatabase")
         }
-        divideDataFromCoreDataInSections(dataFromCoreData)
     }
     
-    func divideDataFromCoreDataInSections(coreDataDictionary: [String: [String: String]]) {
-        let countEntries = coreDataDictionary.count
-        if countEntries == amountOfToDos {
-            print("Gleich viele")
-        }
+    func countNumberOfRowsInSections() {
+        let givenDate = dateFromCoreDataAsNSDate
         
-  
-        for item in 0..<amountOfToDos {
-            print(item)
-            let value = Array(coreDataDictionary.values)[item]
-            if checkIfToDoDateIsInPast(value["toDoDate"]!) {
-                //countForSectionDeprecated++
+        // Test ob erkannt wird, falls ein Datum heute ist.
+        // Funktioniert
+        /*
+        print(dateFromCoreDataAsString)
+        print(dateFromCoreDataAsNSDate.isToday(dateFromCoreDataAsNSDate))
+        print(dataFromCoreData["\(amountOfToDos)"])
+        print("-----")
+        */
+        
+        // Test ob erkannt wird, falls ein Datum in der aktuellen Woche liegt.
+        // Funktioniert, außer bei Jahresübergangswoche
+        /*
+        print(dateFromCoreDataAsString)
+        print(dateFromCoreDataAsNSDate.isInCurrentWeek(dateFromCoreDataAsNSDate))
+        //print(dataFromCoreData["\(amountOfToDos)"])
+        print("-----")
+        */
+        
+        // Test ob erkannt wird, falls ein Datum in der nächsten Woche liegt.
+        // Funktioniert
+        /*
+        print(dateFromCoreDataAsString)
+        print(dateFromCoreDataAsNSDate.isNextWeek(dateFromCoreDataAsNSDate))
+        //print(dataFromCoreData["\(amountOfToDos)"])
+        print("-----")
+        */
+        
+        // Test ob erkannt wird, falls ein Datum frühestens in der übernächsten Woche liegt.
+        // Funktioniert
+        /*
+        print(dateFromCoreDataAsString)
+        print(dateFromCoreDataAsNSDate.isFarFarAway(dateFromCoreDataAsNSDate))
+        //print(dataFromCoreData["\(amountOfToDos)"])
+        print("-----")
+        */
+        
+        if givenDate.isBeforeDate(givenDate) {
+                numberOfRowsInToday++
+        } else if givenDate.isInCurrentWeek(givenDate) && !givenDate.isBeforeDate(givenDate) {
+            if givenDate.isToday(givenDate) {
+                numberOfRowsInToday++
+            } else if givenDate.isTomorrow(givenDate) {
+                numberOfRowsInTomorrow++
             } else {
-                //countForSectionActive++
+                numberOfRowsInCurrentWeek++
             }
+        } else if givenDate.isNextWeek(givenDate) {
+            numberOfRowsInNextWeek++
+        } else {
+            numberOfRowsInFarFarAway++
         }
     }
     
-    // Skript-Version
+    // Not in use
     /*
-    var fetchedResultsController: NSFetchedResultsController {
-        if _fetchedResultsController != nil {
-            return _fetchedResultsController!
-        }
-        let fetchRequest = NSFetchRequest()
-        let entity = NSEntityDescription.entityForName("ToDos", inManagedObjectContext: self.managedObjectContext)
-        fetchRequest.entity = entity
-        fetchRequest.fetchBatchSize = 20
-        let sortDescriptor = NSSortDescriptor(key: "toDoName", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "Master")
-       // aFetchedResultsController.delegate = self
-        _fetchedResultsController = aFetchedResultsController
-        do {
-            try _fetchedResultsController!.performFetch()
-        } catch {
-            abort()
-        }
+    func divideDataFromCoreDataInSections(coreDataDictionary: [String: String]) {
+        //let givenDate = dateFromCoreDataAsNSDate
+
         
-        return _fetchedResultsController!
+        // if date zugehörig zu section 0-4 -> Arbeiten in NSDateExtension
+        // split in dicts
     }
-    
-    var _fetchedResultsController: NSFetchedResultsController? = nil
-    
-    let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     */
     
     
@@ -234,47 +188,70 @@ class ViewController: UITableViewController {
         return isInPast
     }
     
+    // Funktion prüft, ob eine Sektion leer ist.
+    func checkForEmptySections(numberOfRowsInSection: Int) -> Bool {
+        var sectionIsEmpty = false
+        
+        if numberOfRowsInSection == 0 {
+            sectionIsEmpty = true
+        }
+        
+        return sectionIsEmpty
+    }
+    
+    // Funktion löscht leere Sektionen aus dem sectionHeader Array
+    func hideEmptySections() {
+        if checkForEmptySections(numberOfRowsInToday) {
+            sectionHeaders = sectionHeaders.filter() { $0 != "Today" }
+        }
+        if checkForEmptySections(numberOfRowsInTomorrow) {
+            sectionHeaders = sectionHeaders.filter() { $0 != "Tomorrow" }
+        }
+        if checkForEmptySections(numberOfRowsInCurrentWeek) {
+            sectionHeaders = sectionHeaders.filter() { $0 != "Current week" }
+        }
+        if checkForEmptySections(numberOfRowsInNextWeek) {
+            sectionHeaders = sectionHeaders.filter() { $0 != "Next week" }
+        }
+        if checkForEmptySections(numberOfRowsInFarFarAway) {
+            sectionHeaders = sectionHeaders.filter() { $0 != "Far far away" }
+        }
+    }
+    
     
     // Diese Funktion setzt die Anzahl der Sections innerhalb der TableView.
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 5
+        //hideEmptySections()
+        
+        return sectionHeaders.count
     }
     
-    // Teil des neuen Tests.
-    // Anfang..
     // Diese Funktion setzt die Titel der jeweiligen Sections.
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var sectionHeader = ""
         
         switch section {
         case 0:
-            sectionHeader = "Today"
+            sectionHeader = sectionHeaders[0]
         case 1:
-            sectionHeader = "Tomorrow"
+            sectionHeader = sectionHeaders[1]
         case 2:
-            sectionHeader = "Current week"
+            sectionHeader = sectionHeaders[2]
         case 3:
-            sectionHeader = "Next week"
+            sectionHeader = sectionHeaders[3]
         case 4:
-            sectionHeader = "Far far away"
+            sectionHeader = sectionHeaders[4]
         default:
             print("Error in tableView titleForHeaderInSection in ViewController")
         }
         
         return sectionHeader
     }
-    // ..Ende!
     
     // Diese Funktion legt die Anzahl der Reihen/Cells pro Section fest.
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // Skript-Version.
-        /*
-        let numberOfCells = self.fetchedResultsController.fetchedObjects?.count
-        return numberOfCells!
-        */
-        
-        // Teil des neuen Tests.
         var rowCount: Int = 0
+        
         switch section {
         case 0:
             rowCount = numberOfRowsInToday
@@ -296,90 +273,57 @@ class ViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //print(indexPath.section)
         let cell = tableView.dequeueReusableCellWithIdentifier("ToDoCell") as UITableViewCell!
+        // Test-Ausgaben.
+        /*
+        print("section : \(indexPath.section)")
+        print("indexPath : \(indexPath.row)")
+        */
+        let dictValues = Array(self.dataFromCoreData.values)[iterateToDos++]
+        sectionIdentifier = indexPath.section
+        indexPathIdentifier = indexPath.row
+        dataFromCoreDataIterated["\(sectionIdentifier).\(indexPathIdentifier)"] = dictValues
+        let dateOfDictValuesAsString = dataFromCoreDataIterated["\(sectionIdentifier).\(indexPathIdentifier)"]!["toDoDate"]!
+        let dateOfDictValuesAsNSDate = dateOfDictValuesAsString.convertStringToNSDate(dateOfDictValuesAsString)
         
-        // Dictionary-Werte aus CoreData umwandeln und zwischenspeichern.
-        // Den Key.. (hier: toDoName)
-        //let key   = Array(self.dataFromCoreData.keys)[indexPath.row]
-        // ..und die dazugehörigen Werte (hier: toDoName, toDoDescr, toDoEstim, toDoDate).
-        //let value = Array(self.dataFromCoreData.values)[indexPath.row]
+        if dateOfDictValuesAsNSDate.isBeforeDate(dateOfDictValuesAsNSDate) {
+            dataFromCoreDataSectionToday["\(sectionIdentifier).\(indexPathIdentifier)"] = dictValues
+        } else if dateOfDictValuesAsNSDate.isInCurrentWeek(dateOfDictValuesAsNSDate) {
+            if dateOfDictValuesAsNSDate.isToday(dateOfDictValuesAsNSDate) {
+                dataFromCoreDataSectionToday["\(sectionIdentifier).\(indexPathIdentifier)"] = dictValues
+            } else if dateOfDictValuesAsNSDate.isTomorrow(dateOfDictValuesAsNSDate) {
+                dataFromCoreDataSectionTomorrow["\(sectionIdentifier).\(indexPathIdentifier)"] = dictValues
+            } else {
+                dataFromCoreDataSectionCurrentWeek["\(sectionIdentifier).\(indexPathIdentifier)"] = dictValues
+            }
+        } else if dateOfDictValuesAsNSDate.isNextWeek(dateOfDictValuesAsNSDate) {
+            dataFromCoreDataSectionNextWeek["\(sectionIdentifier).\(indexPathIdentifier)"] = dictValues
+        } else {
+            dataFromCoreDataSectionFarFarAway["\(sectionIdentifier).\(indexPathIdentifier)"] = dictValues
+        }
+        
+        let nameOfDictValues = dataFromCoreDataIterated["\(sectionIdentifier).\(indexPathIdentifier)"]!["toDoName"]!
         
         switch indexPath.section {
         case 0:
-            cell.textLabel?.text = "Today"
+            cell.textLabel?.text = nameOfDictValues
             // Speichern in neuem Dict
         case 1:
-            cell.textLabel?.text = "Tomorrow"
+            cell.textLabel?.text = nameOfDictValues
         case 2:
-            cell.textLabel?.text = "Current Week"
+            cell.textLabel?.text = nameOfDictValues
         case 3:
-            cell.textLabel?.text = "Next Week"
+            cell.textLabel?.text = nameOfDictValues
         case 4:
-            cell.textLabel?.text = "Far far away"
+            cell.textLabel?.text = nameOfDictValues
         default:
             print("Error in tableView cellForRowAtIndexPath in ViewController")
         }
         
-        /*
-        
-        // indexPath als neuen eindeutigen identifier bzw Key..
-        // ..für den jeweiligen Eintrag im neuen Dictionary speichern.
-        let indexPathAsString = String(indexPath.row)
-        // Dem neuen Dictionary(Mutable) mittels Key(indexPathAsString) die Werte zuweisen.
-        dataFromCoreDataWithIndexPathAsKey[indexPathAsString] = value
-        
-        // Datum der übergebenen ToDo zwischenspeichern..
-        let toDoDate = dataFromCoreDataWithIndexPathAsKey[indexPathAsString]!["toDoDate"]!
-        let toDoName = dataFromCoreDataWithIndexPathAsKey[indexPathAsString]!["toDoName"]!
-        // .. und prüfen, ob es in der Vergangenheit liegt..
-        if indexPath.section == 0 {
-            if checkIfToDoDateIsInPast(toDoDate) {
-                // .. falls ja, " (deprecated)" anhängen..
-                cell.textLabel?.text = toDoName + " (deprecated)"
-                // .. und den Text rot einfärben.
-                cell.textLabel?.textColor = UIColor.redColor()
-            } else {
-                // Der Cell den Key(toDoName) vom Dictionary(dataFromCoreData) als Text zuweisen.
-                cell.textLabel?.text = toDoName
-            }
-            
-        } else if indexPath.section == 1 {
-            if checkIfToDoDateIsInPast(toDoDate) {
-                // .. falls ja, " (deprecated)" anhängen..
-                cell.textLabel?.text = toDoName + " (deprecated)"
-                // .. und den Text rot einfärben.
-                cell.textLabel?.textColor = UIColor.redColor()
-            } else {
-                // Der Cell den Key(toDoName) vom Dictionary(dataFromCoreData) als Text zuweisen.
-                cell.textLabel?.text = toDoName
-            }
+        if checkIfToDoDateIsInPast(dateOfDictValuesAsString) {
+            cell.textLabel?.text = nameOfDictValues + " (deprecated)"
+            cell.textLabel?.textColor = UIColor.redColor()
         }
         
-        // Alte Umsetzung der Idee.
-        /*
-        // Idee: Wenn Datum in der Vergangenheit cell.textLabel?.text zusätzlich " (veraltet)" hinzufügen.
-        // Anfang Idee //
-        /////////////////
-        let toDoDate = dataFromCoreDataWithIndexPathAsKey[indexPathAsString]!["toDoDate"]!
-        
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy hh:mm"
-        let toDoDateAsNSDate = dateFormatter.dateFromString(toDoDate)
-        //print(testDateAsNSDate)
-        
-        if toDoDateAsNSDate != nil {
-            print(toDoDateAsNSDate)
-            let datNSDate: NSDate = toDoDateAsNSDate!
-            print(datNSDate)
-            
-            if datNSDate.isBeforeDate(NSDate()) {
-                cell.textLabel?.text = key + " (deprecated)"
-                cell.textLabel?.textColor = UIColor.redColor()
-            }
-        }
-        ///////////////
-        // Ende Idee //
-        */
-        */
         return cell
     }
     
@@ -388,7 +332,8 @@ class ViewController: UITableViewController {
         print("Selected cell: \(indexPath.row)")
         
         // Idee: performSegueWithIdentifier (manueller Segue mit indexPath.row).
-        dictKeyIdentifier = indexPath.row
+        sectionIdentifier = indexPath.section
+        indexPathIdentifier = indexPath.row
         performSegueWithIdentifier("ShowDetails", sender: self)
     }
     
@@ -400,7 +345,9 @@ class ViewController: UITableViewController {
     // Mit dieser Funktion kann man auf die Delete/Edit-Anweisungen reagieren.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            print("Deleting cell: \(indexPath.row)")
+            print("Deleting cell:")
+            print("in section: \(indexPath.section)")
+            print("at indexPath: \(indexPath.row)")
             
             // Versuch Daten aus CoreData wieder zu löschen.
             /* http://www.learncoredata.com/create-retrieve-update-delete-data-with-core-data/
@@ -422,8 +369,9 @@ class ViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowDetails" {
             let destinationControllerShowDetails = segue.destinationViewController as! ShowDetailsViewController
-            destinationControllerShowDetails.indexPathHandedOver = dictKeyIdentifier
-            destinationControllerShowDetails.dataFromCoreDataHandedOver = dataFromCoreDataWithIndexPathAsKey
+            destinationControllerShowDetails.sectionHandedOver = sectionIdentifier
+            destinationControllerShowDetails.indexPathHandedOver = indexPathIdentifier
+            destinationControllerShowDetails.dataFromCoreDataHandedOver = dataFromCoreDataIterated
         }
     }
 }

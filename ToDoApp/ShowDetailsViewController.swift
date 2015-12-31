@@ -10,6 +10,7 @@ import UIKit
 
 class ShowDetailsViewController: UIViewController {
     
+    var sectionHandedOver = Int.init()
     var indexPathHandedOver = Int.init()
     var dataFromCoreDataHandedOver = [String:[String:String]]()
     
@@ -21,8 +22,11 @@ class ShowDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        ///////////////
+        // ÜBERARBEITEN
+        ///////////////
         
-        let givenToDo = dataFromCoreDataHandedOver["\(indexPathHandedOver)"]!
+        let givenToDo = dataFromCoreDataHandedOver["\(sectionHandedOver).\(indexPathHandedOver)"]!
         nameLabelOutlet.text = givenToDo["toDoName"]
         descriptionLabelOutlet.text = givenToDo["toDoDesc"]
         estimatedTimeLabelOutlet.text = givenToDo["toDoEstim"]! + " Minuten"

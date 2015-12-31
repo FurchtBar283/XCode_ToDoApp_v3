@@ -45,8 +45,6 @@ extension NSDate {
         return isBefore
     }
     
-    // isDateInToday benutzen?
-    // isDateinTomorrow
     // Funktion prüft ob ein übergebenes Objekt vom Typ NSDate mit dem heutigen Tag übereinstimmt.
     func isToday(dateToCompare: NSDate) -> Bool {
         var isToday: Bool = false
@@ -66,6 +64,56 @@ extension NSDate {
         }
         
         return isToday
+    }
+    
+    // Funktion prüft ob ein übergebenes Objekt vom Typ NSDate mit dem morgigen Tag übereinstimmt.
+    // Noch nicht getestet
+    func isTomorrow(dateToCompare: NSDate) -> Bool {
+        var isTomorrow: Bool = false
+        
+        let tomorrow: NSDate = NSDate.init().addDays(1)
+        // Test-Ausgabe.
+        //print(isTomorrow)
+        
+        let cal = NSCalendar.currentCalendar()
+        //let cal = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+        let weekComparisonResult = cal.compareDate(dateToCompare, toDate: tomorrow, toUnitGranularity: NSCalendarUnit.WeekOfYear)
+        
+        switch weekComparisonResult {
+        case NSComparisonResult.OrderedSame:
+            isTomorrow = true
+            // Test-Ausgabe.
+            //print("In func isTomorrow in NSDateExtension NSComparisonResult.OrderedSame")
+        case NSComparisonResult.OrderedAscending:
+            isTomorrow = false
+            // Test-Ausgabe.
+            //print("In func isTomorrow in NSDateExtension NSComparisonResult.OrderedAscending")
+        case NSComparisonResult.OrderedDescending:
+            isTomorrow = false
+            // Test-Ausgabe.
+            //print("In func isTomorrow in NSDateExtension NSComparisonResult.OrderedDescending")
+        }
+        
+        if isTomorrow == true {
+            let dayComparisonResult = cal.compareDate(dateToCompare, toDate: tomorrow, toUnitGranularity: NSCalendarUnit.Weekday)
+            
+            switch dayComparisonResult {
+            case NSComparisonResult.OrderedSame:
+                isTomorrow = true
+                // Test-Ausgabe.
+                //print("In func isTomorrow in NSDateExtension NSComparisonResult.OrderedSame")
+            case NSComparisonResult.OrderedAscending:
+                isTomorrow = false
+                // Test-Ausgabe.
+                //print("In func isTomorrow in NSDateExtension NSComparisonResult.OrderedAscending")
+            case NSComparisonResult.OrderedDescending:
+                isTomorrow = false
+                // Test-Ausgabe.
+                //print("In func isTomorrow in NSDateExtension NSComparisonResult.OrderedDescending")
+            }
+        }
+        
+        return isTomorrow
     }
 
     // Funktioniert leider nicht bei Woche im Jahresübergang
