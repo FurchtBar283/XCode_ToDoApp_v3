@@ -16,11 +16,7 @@ class ChooseDateViewController: UIViewController {
     var toDoEstimatedTime = ""
     
     @IBAction func dateChosenAction(sender: UIDatePicker) {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy hh:mm"
-        // sender.date ist vom Datentyp NSDate.
-        dateAsString = dateFormatter.stringFromDate(sender.date)
-        //print(dateAsString)
+        dateAsString = dateAsString.convertNSDateToString(sender.date)
     }
   
     override func viewDidLoad() {

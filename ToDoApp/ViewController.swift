@@ -21,11 +21,19 @@ class ViewController: UITableViewController {
     var dictKeyIdentifier = Int.init()
     
     // Test.
-    var dataFromCoreDataSectionActive = [String: [String: String]]()
-    var dataFromCoreDataSectionDeprecated = [String: [String: String]]()
+    var dataFromCoreDataSectionToday = [String: [String: String]]()
+    var dataFromCoreDataSectionCurrentWeek = [String: [String: String]]()
+    var dataFromCoreDataSectionNextWeek = [String: [String: String]]()
+    var dataFromCoreDataSectionFarFarAway = [String: [String: String]]()
     var amountOfToDos: Int = 0
-    var countForSectionActive: Int = 0
-    var countForSectionDeprecated: Int = 0
+    
+    // Zählvariablen für die Anzahl an Einträgen pro Sektion
+    var numberOfRowsInToday: Int = 4
+    var numberOfRowsInCurrentWeek: Int = 4
+    var numberOfRowsInNextWeek: Int = 4
+    var numberOfRowsInFarFarAway: Int = 4
+    var dateFromCoreDataAsString: String = ""
+    var dateFromCoreDataAsNSDate: NSDate = NSDate.init()
     
     @IBOutlet var tableViewOutlet: UITableView!
     
@@ -38,18 +46,6 @@ class ViewController: UITableViewController {
         fetchDatabase()
         // Aktualisieren der TableView.
         tableViewOutlet.reloadData()
-        
-        // Ausgaben zu Testzwecken.
-        /*
-        print(self.dataFromCoreData["Optional(Bierhoff )"])
-        print("blabla")
-        let person = dataFromCoreData["Optional(Bierhoff )"]!
-        
-        let text = person["toDoName"]
-        let text2 = person["toDoDate"]
-        print(text)
-        print(text2)
-        */
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,6 +81,13 @@ class ViewController: UITableViewController {
                         "toDoDesc": "\(item.valueForKey("toDoDesc")!)",
                         "toDoEstim": "\(item.valueForKey("toDoEstim")!)",
                         "toDoDate": "\(item.valueForKey("toDoDate")!)"]
+                    
+                    dateFromCoreDataAsString = dataFromCoreData["\(amountOfToDos)"]!["toDoDate"]!
+                    dateFromCoreDataAsNSDate = dateFromCoreDataAsString.convertStringToNSDate(dateFromCoreDataAsString)
+                    
+                    // if date zugehörig zu section 0-4 -> Arbeiten in NSDateExtension
+                    // split in dicts
+                    
                     amountOfToDos++
                     
                     //print(dataFromCoreData["\(name)"])
@@ -108,9 +111,9 @@ class ViewController: UITableViewController {
             print(item)
             let value = Array(coreDataDictionary.values)[item]
             if checkIfToDoDateIsInPast(value["toDoDate"]!) {
-                countForSectionDeprecated++
+                //countForSectionDeprecated++
             } else {
-                countForSectionActive++
+                //countForSectionActive++
             }
         }
     }
@@ -144,6 +147,7 @@ class ViewController: UITableViewController {
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     */
     
+    
     // Funktion prüft, ob das Datum einer ToDo in der Vergangenheit liegt.
     func checkIfToDoDateIsInPast(toDoDate: String) -> Bool {
         var isInPast: Bool = false
@@ -168,7 +172,7 @@ class ViewController: UITableViewController {
     
     // Diese Funktion setzt die Anzahl der Sections innerhalb der TableView.
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 4
     }
     
     // Teil des neuen Tests.
@@ -177,10 +181,17 @@ class ViewController: UITableViewController {
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var sectionHeader = ""
         
-        if section == 0 {
-            sectionHeader = "Active"
-        } else if section == 1 {
-            sectionHeader = "Deprecated"
+        switch section {
+        case 0:
+            sectionHeader = "Today"
+        case 1:
+            sectionHeader = "Current week"
+        case 2:
+            sectionHeader = "Next week"
+        case 3:
+            sectionHeader = "Far far away"
+        default:
+            "Error in tableView titleForHeaderInSection in ViewController"
         }
         
         return sectionHeader
@@ -197,13 +208,19 @@ class ViewController: UITableViewController {
         
         // Teil des neuen Tests.
         var rowCount: Int = 0
-        if section == 0 {
-            rowCount = countForSectionActive
-        } else if section == 1 {
-            rowCount = countForSectionDeprecated
+        switch section {
+        case 0:
+            rowCount = numberOfRowsInToday
+        case 1:
+            rowCount = numberOfRowsInCurrentWeek
+        case 2:
+            rowCount = numberOfRowsInNextWeek
+        case 3:
+            rowCount = numberOfRowsInFarFarAway
+        default:
+            "Error in tableView numberOfRowsInSection in ViewController"
         }
         
-        //return dataFromCoreData.count
         return rowCount
     }
     
@@ -215,8 +232,14 @@ class ViewController: UITableViewController {
         // Den Key.. (hier: toDoName)
         //let key   = Array(self.dataFromCoreData.keys)[indexPath.row]
         // ..und die dazugehörigen Werte (hier: toDoName, toDoDescr, toDoEstim, toDoDate).
-        let value = Array(self.dataFromCoreData.values)[indexPath.row]
-        print(indexPath.row)
+        //let value = Array(self.dataFromCoreData.values)[indexPath.row]
+        
+        if indexPath.section == 0 {
+            cell.textLabel?.text = "Active"
+        } else {
+            cell.textLabel?.text = "Deprecated"
+        }
+        /*
         
         // indexPath als neuen eindeutigen identifier bzw Key..
         // ..für den jeweiligen Eintrag im neuen Dictionary speichern.
@@ -276,7 +299,7 @@ class ViewController: UITableViewController {
         ///////////////
         // Ende Idee //
         */
-        
+        */
         return cell
     }
     
